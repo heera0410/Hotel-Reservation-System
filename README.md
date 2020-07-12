@@ -25,7 +25,7 @@ This is a backend app to reserve rooms,make payment in a hotel reservation syste
     ```
       uvicorn main:app --reload
     ```
-- The server is running at
+- The server will be running at
  
     ```
        http://127.0.0.1:8000
