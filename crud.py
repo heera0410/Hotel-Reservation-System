@@ -6,13 +6,16 @@ def get_customer_by_id(db: Session, customer_id: int):
     ''' get the customer details with filter function applied on customer id'''
     return db.query(models.Customer).filter(models.Customer.customer_id == customer_id).first()
 
+def get_customer_by_email(db: Session, email: str):
+    return db.query(models.Customer).filter(models.Customer.email == email).first()
+
 
 def get_room_by_room_no(db: Session, room_id:int):
     ''' get the room details with filter function applied on room id'''
     return db.query(models.Room).filter(models.Room.room_no == room_id).first()
 
 def get_rooms(db: Session):
-     ''' get all the room details which is in db created by the admin'''
+    ''' get all the room details which is in db created by the admin'''
     return db.query(models.Room).all()
 
 
@@ -37,6 +40,7 @@ def pay_amount(customer_id:int,account_no:int,mpin:int,db:Session):
     setattr(filter_customer,'status','Booked')
     setattr(filter_customer,'account_no',account_no)
     setattr(filter_customer,'mpin',mpin)
+    db.commit()
     return filter_customer
 
 

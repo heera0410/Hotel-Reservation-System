@@ -29,6 +29,9 @@ def main():
 @app.post("/customers/", response_model=schemas.Customer)
 def reserve_room(customer: schemas.Customer, db: Session = Depends(get_db)):
     ''' make a function call to reserve room''' 
+    db_customer = crud.get_customer_by_email(db, email=customer.email)
+    if db_customer:
+        raise HTTPException(status_code=400, detail="Email already registered")
     return crud.reserve_room(db=db, customer=customer)
 
 
@@ -61,11 +64,11 @@ def pay_amount_to_book_rooms(customer_id:int,account_no:int,mpin:int,db:Session=
     pay=crud.pay_amount(customer_id,account_no,mpin,db=db)
     return pay
 
-@app.delete("/customer/{customer_id}/")
+@app.delete("/customer/{customer_id}")
 def cancel_room(customer_id:int,db: Session = Depends(get_db)):
     '''cancels the booking if customer dont want that room or need to reserve again '''
-     db_customer = crud.get_customer_by_id(db, customer_id=customer_id)
-     return crud.cancel_room(db,db_customer)
+    db_customer = crud.get_customer_by_id(db, customer_id=customer_id)
+    return crud.cancel_room(db,db_customer)
 
     
       
